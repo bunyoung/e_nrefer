@@ -1,0 +1,376 @@
+<?php
+include('phpqrcode/qrlib.php'); 
+QRcode::png($_GET['w']);
+?>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<?php
+	include_once('vendor/autoload.php');
+	include('db/connection.php');
+	ob_start();
+?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
+<link rel="stylesheet" href="style.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Thasadith&display=swap" rel="stylesheet">
+
+<head>
+    <style>
+    body {
+        font-family: 'Thasadith', sans-serif;
+        /* font-size: 16px; */
+        font-weight: 10px;
+    }
+
+    .table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    .font16 {
+        /* font-family: "Thasadith"; */
+        font-size: 7pt;
+        font-weight: normal;
+
+    }
+
+    .font16h {
+        /* font-family: "Thasadith"; */
+        font-size: 15pt;
+        font-weight: 40px;
+    }
+
+    .font16s {
+        /* font-family: "Thasadith"; */
+        font-size: 4pt;
+        font-weight: 10px;
+    }
+
+    .font16m {
+        /* font-family: "Thasadith"; */
+        font-size: 11pt;
+        font-weight: 20px;
+    }
+
+    .font18h {
+        /* font-family: "Thasadith"; */
+        font-size: 16pt;
+        font-weight: 80px;
+    }
+
+    img.barcode {
+        border: 0px solid #ccc;
+        padding: 0px 0px;
+        border-radius: 0px;
+    }
+
+    .center {
+        text-align: center;
+    }
+
+    .right {
+        text-align: right;
+    }
+
+    .left {
+        text-align: left;
+    }
+
+    .div {
+        width: 100%;
+    }
+    </style>
+</head>
+
+<!-- <body  onLoad="window.print(); setTimeout(window.close, 0);"> -->
+
+<body>
+    <?php	
+	$id = null;
+	if(isset($_GET["id"]))
+	{
+		$id = $_GET["id"];
+	}
+	$strSQL ="SELECT * FROM v_rf_print WHERE rf_id = '".$id."' ";
+	$result = mysqli_query($conn,$strSQL);
+	while($rs = mysqli_fetch_array($result)) 
+	{
+        $hs1 = '<b>'.$rs["hosname"].' ('.$rs['rf_hospital'].')</b>';
+        $h1 = 'สถานพยาบาลต้นทาง: <b>'.$rs["hosname"].'      ('.$rs['rf_hospital'].')</b>';
+		$hd3 = 'สถานพยาบาลปลายทาง:<b>'.$rs["hossendto_name"].'       ('.$rs['rf_hos_send_to'].'</b>)';
+        $hd1='วันที่ขอส่งต่อ:<b>'.'   '.$rs['rf_date'].'</b> เวลา: <b>'.$rs['rf_time'].'</b> น.' ;
+        $sd12=  'ประเภทส่งต่อ: <b>'.$rs['rfevent'].'</b>' ;
+        $sd121='ความเร่งด่วน: '.$rs['rffast'];
+        $hd2='สิทธิ์การรักษา: <b>'.$rs['pttyename'].'</b>';
+        // $hd2='สิทธิ์การรักษา: <b>'.$rs['pttyename'].'</b>  ระดับความรุนแรงของผู้ป่วย: <b>'.$rs['rffast'].'</b>';
+		$h5 = ' ชื่อ-สกุล ผู้ป่วย:<b>'.$rs['rf_patients'].' </b> เพศ: <b>'.$rs['rf_sex'].'</b>  อาย: <b>'.$rs['rf_age'].'</b> ปี เลขที่บัตรประชาชน: <b>'.$rs['rf_idcard'].'</b>';
+        $h9 = 'HN: '.'<b>'.$rs['rf_hn'].'</b>  AN: <b>'.'    '.$rs['rf_an'].'</b> OPD/WARD: <b>'.'('.$rs['rf_placecode'].') '.$rs['rf_placename'].'</b>';
+        $h91='วันนอน รพ./รับบริการ: <b>'.$rs['rf_serv'].'</b>';
+        $hd4 = 'ที่อยู่ตามทะเบียนบ้าน :<b>   '.$rs['rf_maddress'].'</b>';
+        $hd41 = 'ที่อยู่ปัจจุบัน :<b>   '.$rs['rf_saddress'].'</b>';
+		$hd5 = 'ประวัติการแพ้ยา  :<b> '.$rs['rf_allergy'].'</b>';
+		// $hd6 = 'ประวัติผู้ป่วยปัจจุบัน  :<b> '.wordwrap($rs['rf_his_patient'],2000,"<br />\n").'</b>';
+		$hd6 = $rs['rf_his_patient'];
+		$hd7 = $rs['rf_his_body'];
+		$hd8 = $rs['rf_his_lab'];
+		$hd9 = '<b> '.$rs['rf_his_takecare_now'].'</b>';
+		$hd10 = '<b>'.$rs['rf_exp_takecare_hosp_end'].'</b>';
+        // $hd11 = 'การวินิจฉัยโรค (ระบุเอง)  :<b> '.$rs['rf_icd_free_text'].'</b>';
+        $hd11 = '<b> '.$rs['rf_icd_free_text'].'</b>';
+		$hd12 = 'การวินิจฉัยโรค (ตาม ICD-10) :';
+        $hd121='<b> 1. '.$rs['icd10c'].'</b><br>';
+        $hd122='<b> 2. '.$rs['icd10b'].'</b><br>';
+        $hd123='<b> 3.'.$rs['icd10a'].'</b>';
+        // $hd13 = 'Refer Out (กลุ่มงาน-สาขา/โรค/อวัยวะ)  :<b> '.$rs['rf_placename'].'</b'.'  Refer Out (โรค/ภาวะ): <b>'.$rs['rf_comment_takecare_hosp_end'].'</b>';
+        $hd13 = 'Refer Out (กลุ่มงาน-สาขา/โรค/อวัยวะ)  :<b> '.$rs['rf_placename'].'</b>';
+		$hd14 = 'เหตุผลอื่น Refer Out (ระบุเอง)  :<b> '.$rs['rf_comment_takecare_hosp_end'].'</b>';
+        $hd15 = 'ชื่อแพทย์ผู้ส่งต่อ:'.$rs['docsend_prename'].$rs['docsend_name'].'   '.$rs['docsend_surname'];
+        $hd16 = $rs['docme_prename'].$rs['docme_name'].'  '.$rs['docme_surname'].'  ('.$rs['docme_code'].')';
+        $hd17 = $rs['m_depname'].' ('.$rs['m_code'].')';
+        $hd18 = $rs['docsend_prename'].$rs['docsend_name'].'  '.$rs['docsend_surname'].'  ('.$rs['docsend_code'].')';
+        $hno = $rs["rf_no_refer"];
+	}
+	?>
+    <table>
+        <tr>
+            <td style="width:100%;">
+                <img src="print_refer_out02.php?w=http://192.168.99.17/e_nrefer/print_refer_out02.php?id=<?=$hno;?>" />
+                <br>
+                <?php echo 'e-Refer form เลขที่' .'<font size="2" class="font16" style="text-align:center;">' ?>
+                <br>
+                <?php echo  $hno .'<font size="2" class="font16" style="text-align:center;">' ?>
+            </td>
+            <td style="width:100%;">
+                <img src="barcode39.php?barcode=<?php echo $hno.'&width=500px&height=60px';?>" />
+            </td>
+        </tr>
+    </table>
+
+    <!-- ขอความหัวเรื่อง -->
+    <div style="left:20px; top:130px;text-align:center;">
+        <?php echo '<font style="font-weight: bold;" class="font18h">'; ?>
+        <?php echo 'แบบสำหรับส่งต่อผู้ป่วยไปรับการตรวจหรือรักษาต่อ (Referral Information Form)';?>
+    </div>
+
+    <!-- จาก-->
+    <div style="left:20px; top:170px;text-align:center;">
+        <?php echo '<font size="2" class="font18h">'; ?>
+        <?php echo $hs1;?>
+    </div>
+
+    <!-- สถานพยาบาลต้นทาง ปลายทาง -->
+    <?php 
+        $nc=25;
+        $nl=300;
+        $nl=($nl+$nc).'px;'; 
+    ?>
+    <div style="position:absolute;left:40px; top:300px;">
+        <?php echo '<font size="2" class="font16h">'; ?>
+        <?php echo $h1; ?>
+    </div>
+    <?php 
+        $nl=($nl+$nc).'px;'; 
+    ?>
+
+    <div style="position:absolute;left:40px; top:325px;">
+        <?php echo '<font size="2" class="font16h">'; ?>
+        <?php echo $hd3; ?>
+    </div>
+
+    <!-- วันที่ขอ -->
+    <div style="position:absolute;left:550px;top:370px;">
+        <?php echo '<font size="2" class="font16h">'; ?>
+        <?php echo $hd1; ?>
+    </div>
+    <div style="position:absolute;left:550px; top:395px;">
+        <?php echo '<font size="2" class="font16h">'; ?>
+        <?php echo $sd12; ?>
+    </div>
+    <div style="position:absolute;left:550px; top:420;">
+        <?php echo '<font size="2" class="font16h">'; ?>
+        <?php echo $sd121; ?>
+    </div>
+
+    <!-- ชื่อนามสกุล -->
+    <div style="position:absolute;left:40px; top:460px;">
+        <?php echo '<font size="2" class="font16h">'; ?>
+        <?php echo $h5; ?>
+    </div>
+    <!-- HN -->
+    <div style="position:absolute;left:40px; top:485px;">
+        <?php echo '<font size="2" class="font16h">'; ?>
+        <?php echo $h9; ?>
+    </div>
+    <div style="position:absolute;left:40px; top:510px;">
+        <?php echo '<font size="2" class="font16h">'; ?>
+        <?php echo $hd2; ?>
+    </div>
+
+    <!-- วันที่นอน รพ -->
+    <?php 
+        // $nl=470;$nc=25;
+        $nl=$nl+$nc.'px'; 
+    ?>
+    <div style="position:absolute;left:40px; top:535px;">
+        <?php echo '<font size="2" class="font16h">'; ?>
+        <?php echo $h91; ?>
+    </div>
+
+    <!-- ที่อยู่ ตามทะเบียนบ้าน-->
+    <div style="position:absolute;left:40px; top:560px;">
+        <?php echo '<font size="2" class="font16h">'; ?>
+        <?php echo $hd4; ?>
+    </div>
+    <!-- ที่อยู่ ปัจจุบัน-->
+    <div style="position:absolute;left:40px; top:585px;">
+        <?php echo '<font size="2" class="font16h">'; ?>
+        <?php echo $hd41; ?>
+    </div>
+    <!-- ประวัติการแพ้ยา-->
+    <div style="position:absolute;left:40px; top:610px;">
+        <?php echo '<font size="2" class="font16h">'; ?>
+        <?php echo $hd5; ?>
+    </div>
+    <!-- ประวัติผู้ป่วยปัจจุบัน-->
+    <div style="position:absolute;left:40px; top:635px;">
+        <?php echo '<font size="2" class="font16h">'; ?>
+        <?php echo 'ประวัติผู้ป่วยปัจจุบัน  : '; ?>
+    </div>
+    <div style="position:absolute;left:60px; top:660px;">
+        <?php echo '<font size="2" class="font16h">'; ?>
+        <?php echo $hd6; ?>
+    </div>
+    <div style="position:absolute;left:40px; top:780px;">
+        <?php echo '<font size="2" class="font16h">'; ?>
+        <?php echo 'ตรวจร่างกาย'; ?>
+    </div>
+    <div style="position:absolute;left:60px; top:805px;">
+        <?php echo '<font size="2" class="font16h">'; ?>
+        <?php echo $hd7; ?>
+    </div>
+    <div style="position:absolute;left:40px; top:880px;">
+        <?php echo '<font size="2" class="font16h">'; ?>
+        <?php echo 'การตรวจทางห้องปฏิบัติการ/รังสี/อื่น ๆ :'; ?>
+    </div>
+    <div style="position:absolute;left:60px; top:905;">
+        <?php echo '<font size="2" class="font16h">'; ?>
+        <?php echo $hd8; ?>
+    </div>
+
+    <!--  -->
+    <div style="position:absolute;left:40px; top:980px;">
+        <?php echo '<font size="2" class="font16h">'; ?>
+        <?php echo 'การวินิจฉัยระบุเอง :'; ?>
+    </div>
+    <div style="position:absolute;left:60px; top:1005px;">
+        <?php echo '<font size="2" class="font16h">'; ?>
+        <?php echo $hd11; ?>
+    </div>
+    <!--  -->
+    <div style="position:absolute;left:40px; top:1055px;">
+        <?php echo '<font size="2" class="font16h">'; ?>
+        <?php echo 'การวินิจฉัย (ICD10) :'; ?>
+    </div>
+    <div style="position:absolute;left:60px; top:1080px;">
+        <?php echo '<font size="2" class="font16h">'; ?>
+        <?php echo $hd121; '<br>'?>
+        <?php echo $hd122; '<br>'?>
+        <?php echo $hd123; '<br>'?>
+    </div>
+    <!--  -->
+    <div style="position:absolute;left:40px; top:1205px;">
+        <?php echo '<font size="2" class="font16h">'; ?>
+        <?php echo 'การรักษาปัจจุบัน:'; ?>
+    </div>
+    <div style="position:absolute;left:60px; top:1230px;">
+        <?php echo '<font size="2" class="font16h">'; ?>
+        <?php echo $hd9; '<br>'?>
+    </div>
+    <!--  -->
+    <div style="position:absolute;left:40px; top:1255px;">
+        <?php echo '<font size="2" class="font16h">'; ?>
+        <?php echo 'แผนการรักษาแจ้งปลายทาง:'; ?>
+    </div>
+    <div style="position:absolute;left:60px; top:1280px;">
+        <?php echo '<font size="2" class="font16h">'; ?>
+        <?php echo $hd10; '<br>'?>
+    </div>
+    <!--  -->
+    <div style="position:absolute;left:40px; top:1305px;">
+        <?php echo '<font size="2" class="font16h">'; ?>
+        <?php echo 'ชื่อแพทย์ผู้ส่ง:  '.$hd18; ?>
+    </div>
+    <!--  -->
+    <div style="position:absolute;left:40px; top:1330px;">
+        <?php echo '<font size="2" class="font16h">' ?>
+        <?php echo 'ชื่อแพทย์เจ้าของไข้:  ' .$hd16; ?>
+    </div>
+    <!--  -->
+    <div style="position:absolute;left:40px; top:1355px;">
+        <?php echo '<font size="2" class="font16h">' ?>
+        <?php echo 'กลุ่มงานส่งต่อ:  '.$hd17; ?>
+    </div>
+
+    <!-- สุดท้าย -->
+    <div style="position:absolute;left:40px; top:1405px;">
+    <?php echo '<font size="2" class="font16m">'; ?>
+        <table style="width:45%;">
+            <tr>
+                <td style="width:600px;">
+                <?php echo '<font size="2" class="font16m">'; ?>
+                    <table style="border: 1px solid;font-size:16px;">
+                        <tr>
+                            <td style="width:100%;">
+                            <?php echo '<font size="2" class="font16m">'; ?>
+
+                                ใช้สิทธิ.....................................................
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                            <?php echo '<font size="2" class="font16m">'; ?>
+                                เรียกเก็บเงินไป......................................
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                วันหมดอายุ OPD..................................
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                วันหมดอายุ IPD..................................
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div style="position:absolute;left:350px; top:1400px;width:30%;">
+        <img src="print_refer_out02.php?w=http://192.168.99.17/e_nrefer/print_refer_out02.php?id=<?=$hno;?>" />
+        <br>
+        <?php echo 'e-Refer form เลขที่' .'<font size="2" class="font16" style="text-align:center;">' ?>
+        <br>
+        <?php echo  $hno .'<font size="2" class="font16" style="text-align:center;">' ?>
+        </td>
+    </div>
+    <div style="position:absolute;left:800px; top:1500px;">
+        <br>
+        <?php echo '<font size="2" class="font16m">'; ?>
+        <?php echo 'ลงชื่อ .......................................................'; ?>
+        <br>
+        <?php echo '<font size="2" class="font16m">'; ?>
+        <?php echo '('.$hd18 ?>
+        <br>
+        <?php echo '<font size="2" class="font16m">'; ?>
+        <?php echo date("d-m-Y"); ?>
+    </div>
+</body>
+
+</html>

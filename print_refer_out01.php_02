@@ -1,0 +1,285 @@
+<?php
+include('phpqrcode/qrlib.php'); 
+QRcode::png($_GET['w']);
+?>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<?php
+	include('main_script.php');
+	include_once('vendor/autoload.php');
+	include('db/connection.php');
+	ob_start();
+?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
+<link rel="stylesheet" href="style.css" />
+
+<head>
+    <style>
+    body {
+        font-family: "TH sarabun New", sans-serif;
+        font-size: 18px;
+    }
+    </style>
+    <style>
+    .center {
+        text-align: center;
+    }
+
+    .right {
+        text-align: right;
+    }
+
+    .left {
+        text-align: left;
+    }
+
+    .div {
+        width: 100%;
+    }
+    </style>
+</head>
+
+<body>
+
+    <body>
+
+        <?php	
+	$id = null;
+	if(isset($_GET["id"]))
+	{
+		$id = $_GET["id"];
+	}
+	$strSQL ="SELECT * FROM v_rf_print WHERE rf_id = '".$id."' ";
+	$result = mysqli_query($conn,$strSQL);
+	while($rs = mysqli_fetch_array($result)) 
+	{
+		$d1 = $rs['docsend_prename'].''.$rs['docsend_name'].'   '.$rs['docsend_surname'];
+		$d2 = $rs['docme_prename'].''.$rs['docme_name'].'   '.$rs['docme_surname'];
+
+		$hno = $rs["norf"];
+		$h1 = '<b>'.$rs["hosname"].'</b>';
+		$h2 = '<b>'.$rs["rf_date"].'</b>';
+		$h3 = '<b>'.$rs['rf_time'].'</b>  น.';
+		$h4 = '<b>'.$rs['m_depname'].'</b>'; 
+		$h5 = '<b>'.$rs['rf_patients'].'</b>';
+		$h6 = '<b>'.$rs['rf_age'].'</b>';
+		$h7 = '<b>'.$rs['rf_idcard'].'</b>';
+        $h8 = '<b>'.$rs['rf_serv'].'</b>';
+        $h9 = '<b>'.$rs['pname'].'</b>';
+		$h10='<b>'.$rs['icd10a'].'.'.$rs['icd10b'].','.$rs['icd10c'].'</b>';
+        $h11='<b>'.$rs['indication'].'</b>';
+        $h12='<b>'.$rs['rf_his_patient'].'</b>';
+        $g1='<b>'.$rs['rfevent'].' </b>';
+        $g2='<b>'.$rs['rffast'].'</b>';
+        $g4='<b>'.$rs['rf_placename'].'   ('.$rs['rf_placecode'].')</b>';
+        $g5='<b>'.$rs['sindication_name'].'</b>';
+        $g6='<b>'.$rs['rf_comment_takecare_hosp_end'].'</b>';
+        $g7='<b>'.$rs['rf_patients'].'</b>';
+        $g9='<b>'.$rs['rf_hn'].'  AN :'.$rs['rf_an'].'</b>';
+        $g10='<b>'.$rs['rf_bedno'].'</b>';
+        $g11='<b>'.$rs['rf_age'].'</b>';
+        $g12='<b>'.$rs['rf_sex'].'</b>';
+        $g13='<b>'.$rs['pttypename'].'</b>';
+        $g14='<b>'.$rs['hosmain'].'</b>';
+        $g15='<b>'.$rs['hossub'].'</b>';
+        $g16='<b>'.$rs['docsend_prename'].''.$rs['docsend_name'].' '.$rs['docsend_surname'].'   (ว. '.$rs['docsend_code'].')</b>';
+        $g17='<b>'.$rs['docme_prename'].''.$rs['docme_name'].' '.$rs['docme_surname'].'  (ว. '.$rs['docme_code'].')</b>';
+        $g18='<b>'.$rs['m_depname'].'</b>';
+        $rshp = '<b>'.$rs['hosname'].'</b>';
+        $rsst = '<b>'.$rs['hossendto_name'].'</b>';
+        $rtdate =date("d-m-Y").'  '.date("H:i:s");
+        $hd41 = '<b>'.$rs['rf_saddress'].'</b>';
+        $hd43 = 'โทรศัพท์:  <b>'.$rs['rf_stel'].'</b>';
+	}
+	?>
+        <div class="container">
+            <table class="table-responsive" width="100%" align="center" style='border: 1px solid; padding-left:20px;
+              font-family: "sarabun";font-size: 16px;font-weight:bold;padding: 0rem;margin-top:0px;'>
+                <tr>
+                    <table width="100%" align="center" style='border: 0px solid; padding-left:60px;
+                                      font-family: "sarabun";font-size: 14px;padding:1px;'>
+                        <tr>
+                            <td style="font-family:sarabun; font-size: 18px;
+                                          color:#006064;font-weight:bold;padding: 2rem; text-align:center;">
+                                ใบส่งต่อผู้ป่วย (อย่างย่อ)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div style="width:100%; top:0px;text-align:center;font-size:20px;">
+                                    <img src="barcode39.php?barcode=<?php echo $hno.'&width=750px&height=60px';?>" />
+                                </div>
+                            </td>
+                        </tr>
+                        <br>
+                        <tr>
+                            <td colspan="6"><?php echo 'Refer No : '. $hno; ?></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <?php echo 'ต้นทาง :  '.$rshp; ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <?php echo 'ปลายทาง : '.$rsst; ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div style="width:100%; top:0px;text-align:center;">
+                                    <img
+                                        src="print_refer_out02.php?w=http://61.19.25.194/e_nrefer/print_refer_out03.php?id=<?=$id;?>" />
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <?php echo 'วันที่ขอส่งต่อ:  '.$h2.'   เวลา :  '.$h3;?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <?php echo 'ประเภท :  '.$g1;?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <?php echo 'ประเภทผู้ป่วย (ความเร่งด่วน) :  '.$g2; ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><br></td>
+                        </tr>
+                        <tr>
+                            <td colspan="6" style="BORDER-BOTTOM: #999999 4px dotted"></td>
+                        </tr>
+                        <tr>
+                            <td><br></td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <?php echo ' ชื่อ-นามสกุล ผู้ป่วย : '.$g7;?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><?php echo 'อายุ : '.$g11.'  ปี  เพศ :  '.$g12; ?></td>
+                        </tr>
+                        <tr>
+                            <td><?php echo 'สิทธิ์การรักษา :  '.$g13;?></td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <?php echo 'HN:  '.$g9; ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <?php echo 'หน่วยบริการ : '.$g4; ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <?php echo 'สถานพยาบาลหลัก : '.$g14; ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <?php echo 'สถานพยาบาลรอง : '.$g15; ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <?php echo 'ที่อยู่ปัจจุบัน : '.$hd41; ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <?php echo $hd43; ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><br></td>
+                        </tr>
+                        <tr>
+                            <td colspan="6" style="BORDER-BOTTOM: #999999 4px dotted"></td>
+                        </tr>
+                        <tr>
+                            <td><br></td>
+                        </tr>
+                        <tr>
+                            <td><?php echo 'แพทย์ผู้ส่ง :  '.$g16;?></td>
+                        </tr>
+                        <tr>
+                            <td><?php echo 'แพทย์เจ้าของไข้ :  '.$g17;?></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                กลุ่มงาน:<?php echo $g18;?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><br></td>
+                        </tr>
+                        <tr>
+                            <td colspan="6" style="BORDER-BOTTOM: #999999 4px dotted"></td>
+                        </tr>
+                        <tr>
+                            <td><br></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <?php echo 'สถานพยาบาลปลายทางกรุณา SCAN QR code เพื่อลงบันทึกผู้ป่วยเมื่อถึงปลายทาง';?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><br></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <center>
+                                <div style="width:100%; top:0px;text-align:center;">
+                                    <img
+                                        src="print_refer_out02.php?w=http://61.19.25.194/e_nrefer/sys_hycall_send_receive.php?sid=<?=$id;?> & hos=<?=$hos;?>" />
+                                </div>
+                                </center>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <center>
+                                ท่านสามารถติดต่อศูนย์บริหารจัดการส่งต่อผู้ป่วย โรงพยาบาลหาดใหญ่ (HY-RMC) ผ่านทาง LINE Official ข้างล่างนี้ครับ <br>
+                                เบอร์ติดต่อศูนย์โดยตรง: 074-273-100 ต่อ 2108,5433  <br>
+                                Email.: referonlinehy@gmail.com
+                                </center>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <center>
+                                <div style="width:100%; top:0px;text-align:center;">
+                                    <img  src="./img/lineall.JPG" style="width: 115px;"/>
+                                </div>
+                                </center>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><br></td>
+                        </tr>
+                        <tr>
+                            <td><br></td>
+                        </tr>
+                        <tr>
+                            <td class="pull right"><?php echo 'วันที่พิมพ์ :'.$rtdate;?></td>
+                        </tr>
+                    </table>
+                    <br>
+                </tr>
+            </table>
+        </div>
+    </body>
+
+</html>
