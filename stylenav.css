@@ -1,0 +1,15 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto|Sacramento');
+body{font-family:'Roboto','sans-serif';}
+.my_navbar{
+  /* background-color:#03517e; */
+  border-bottom:2px solid #adc9d3;
+  width:100%;
+height: 280px;
+padding: 10 10px;
+position: fixed;
+margin: 0px;
+z-index: 1;
+opacity: 0.9;
+/* margin-top:-35px; */
+  }
+  

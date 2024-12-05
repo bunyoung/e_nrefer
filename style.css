@@ -1,0 +1,189 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto|Sacramento');
+body{font-family:'sarabun','sans-serif';}
+.my_navbar{
+    /* border-top:0px solid rgb(217 70 239); */
+    background-color:rgb(45, 2, 83);
+  /* border-bottom:2px solid rgb(217 70 239); */
+  width:100%;
+height: auto;
+/* padding: 0 10px; */
+/* position: fixed; */
+/* margin: 0px; */
+/* z-index: 1; */
+/* opacity: 1.0; */
+  }
+  
+.my_navbar  .navbar-nav >  li >  a
+{
+font-size: 20px;
+color: rgb(232, 228, 235);
+/* padding: 15px 20px; */
+}
+.my_navbar  .navbar-nav >  li > a.active
+{
+font-size: 20px;
+color: #530485;
+background-color:#2e3d41;
+}
+
+.my_navbar  .navbar-nav >  li >  a:hover
+{
+font-size: 20px;
+/* color: #ffffff; */
+/* padding: 15px 20px; */
+background-color:#7406a7;
+}
+.my_navbar .navbar-nav>li>.dropdown-menu {
+    margin-top: 0;
+    /* border-top-left-radius: 0; */
+    /* border-top-right-radius: 0; */
+	background-color:#2e3d41;
+}
+.dropdown-menu>li>a {
+    /* display: block; */
+    padding: 10px 20px;
+    clear: both;
+    font-weight: 400;
+    line-height: 1.42857143;
+    /* color: #9a0fee; */
+    white-space: nowrap;
+}
+
+.navbar-header > a
+{
+font-family:  'sarabun', cursive;
+margin: 0px;
+text-decoration: none;
+color:rgb(14 165 233);
+font-size: 35px;
+font-weight:bolder;
+padding: 15px 30px;
+}
+.my_navbar .navbar-toggle {
+    position: relative;
+    float: right;
+    padding: 10px 10px;
+    margin-top: 7px;
+    margin-right: 15px;
+    margin-bottom: 8px;
+    background-color: #2e3d41;
+    background-image: none;
+    /* border: 0px solid #2e3d41; */
+    border-radius: 4px;
+}
+.my_navbar .navbar-toggle .icon-bar {
+    color: #0b0111;
+    display: block;
+    width: 20px;
+    height: 4px;
+    border-radius: 0px;
+}
+/* สำหรับ tabs */
+a:hover,
+a:focus{
+    text-decoration: none;
+    outline: none;
+}
+.vertical-tab{
+    font-family: 'sarabun', sans-serif;
+    display: table;
+}
+.vertical-tab .nav-tabs{
+    width: 13%;
+    min-width: 13%;
+    border: none;
+    vertical-align: top;
+    display: table-cell;
+}
+.vertical-tab .nav-tabs li{ float: none; }
+.vertical-tab .nav-tabs li a{
+    color: #666;
+    background: #fff;
+    font-size: 19px;
+    font-weight: 500;
+    text-transform: capitalize;
+    text-align: center;
+    padding: 8px 25px 10px;
+    margin: 0 0 10px 0;
+    border: none;
+    /* border-top: 3px solid #9506bc; */
+    border-radius: 0;
+    box-shadow: 0 0 7px rgba(0, 0, 0, 0.1) inset;
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+    transition: all 0.5s ease 0s;
+    -webkit-transition: all 0.53s ease 0s;
+    -moz-transition: all 0.53s ease 0s;
+    -ms-transition: all 0.53s ease 0s;
+    -o-transition: all 0.53s ease 0s;
+}
+.vertical-tab .nav-tabs li a:hover,
+.vertical-tab .nav-tabs li.active a,
+.vertical-tab .nav-tabs li.active a:hover{
+    color: #fff;
+    background: transparent;
+    border: none;
+    border-top: 0px solid #0e0111;
+}
+.vertical-tab .nav-tabs li a:before,
+.vertical-tab .nav-tabs li a:after{
+    content: "";
+    background-color: #16031b;
+    width: 50.5%;
+    height: 100%;
+    opacity: 0;
+    transform: perspective(300px) rotateX(-100deg);
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    transition: all 0.4s ease 0s;
+}
+.vertical-tab .nav-tabs li a:after{
+    transform: perspective(300px) rotateX(100deg);
+    left: auto;
+    right: 0;
+    transition: all 0.4s ease 0.1s;
+}
+.vertical-tab .nav-tabs li.active a:before,
+.vertical-tab .nav-tabs li a:hover:before,
+.vertical-tab .nav-tabs li.active a:after,
+.vertical-tab .nav-tabs li a:hover:after{
+    opacity: 1;
+    transform: perspective(300px) rotateX(0);
+}
+.vertical-tab .tab-content{
+    color: #555;
+    background-color: #fff;
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    line-height: 25px;
+    padding: 5px 10px 5px;
+    border-bottom: 4px solid #210329;
+    box-shadow: 0 0 7px rgba(0,0,0,0.1) inset;
+    display: table-cell;
+}
+.vertical-tab .tab-content h3{
+    color: #1b0322;
+    font-size: 20px;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin: 0 0 7px;
+}
+@media only screen and (max-width: 479px){
+    .vertical-tab .nav-tabs{
+        width: 100%;
+        margin: 0 0 15px;
+        display: block;
+    }
+    .vertical-tab .nav-tabs li a{
+        padding: 15px 10px 14px;
+        margin-right: 0;
+    }
+    .vertical-tab .tab-content{
+        font-size: 18px;
+        display: block; 
+    }
+}
