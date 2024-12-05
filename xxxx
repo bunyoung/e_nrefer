@@ -1,0 +1,29 @@
+$sMessage =  
+                "\r\n".'ขออนุมัติ Refer Out จาก HY-RMC '.
+                "\r\n".'สำหรับ '.$rss['m_name'].'  หัวหน้ากลุ่มงาน  '.$rss['m_depname'].
+                "\r\n".'_______________________________________________________'.
+                "\r\n".'Refer No. : '.'(รอออกเลข Refer หลังผ่านอนุมัติจากท่าน)'.
+                "\r\n".'วันที่ส่งต่อ : '.$rss['rf_date'].'  เวลา :'.$rss['rf_time'].' น.'.
+                "\r\n".'ประเภท : '.$rss['rfevent'].'  (0'.$rss['rf_rfev'].')'.
+                "\r\n".'ความรุนแรง : '.$rss['rffast'].
+                "\r\n".'ต้นทาง : '.$rsshp.
+                "\r\n".'ปลายทาง : '.$rssst.
+                "\r\n".'_______________________________________________________'.
+                "\r\n".'กลุ่มงาน-สาขา Refer Out : '.$rss['m_depname'].'-'.$rss['indication']. 
+                "\r\n".'โรค/ภาวะ Refer Out : '.$rss['sindication_name'].
+                "\r\n".'เหตุผล Refer Out อื่น ๆ : '.$rss['rf_comment_takecare_hosp_end'].
+                "\r\n".'ชื่อ-สกุลผู้ป่วย : '.$rss['rf_patients'].
+                "\r\n".'HN :'.$rss['rf_hn'].'  AN :'.$rss['rf_an'].
+                "\r\n".'เตียง :'.$rss['rf_bedno'].
+                "\r\n".'อายุ :'.$rss['rf_age'].' ปี  เพศ : '.$rss['rf_sex'].
+                "\r\n".'สิทธิ์การรักษา : '.$rss['pttypename'].
+                "\r\n".'สถานพยาบาลหลัก : '.$rss['hosmain'].
+                "\r\n".'สถานพยาบาลรอง : '.$rss['hossub'].
+                "\r\n".'แพทย์ผู้ส่ง : '.$rss['docsend_prename'].''.$rss['docsend_name'].' '.$rss['docsend_surname'].
+                "\r\n".'แพทย์เจ้าของไข้ : '.$rss['docme_prename'].''.$rss['docme_name'].' '.$rss['docme_surname'].
+                "\r\n".'_______________________________________________________'.
+                "\r\n".' สามารถดูข้อมูล  refer out  ได้ที่ :'.
+                "\r\n".'http://61.19.25.203/e_nrefer/rf_mobile/mb_ref_preview.php?id='.$id.
+                "\r\n".''.
+                "\r\n".' สามารถอนุมัติ  refer out  ได้ที่ :'.
+                "\r\n".'http://61.19.25.203/e_consult/print_consult_a4_pdf.php?id='.$id;
