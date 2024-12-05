@@ -1,0 +1,52 @@
+SELECT
+hos_guid, ---> hn || cid
+vn,
+hn,
+an,
+TO_CHAR(vstdate, 'YYYY-mm-dd')vstdate,
+TO_CHAR(vsttime, 'HH24:MI:SS')vsttime,
+hospmain,
+hospsub,
+oqueue,
+ovstist, ---> ? ( link กับ SELECT 
+    CODE AS  ovstist,
+    NAME AS  name,
+    CASE
+    WHEN NAME LIKE '%ไม่มาตามนัด%' THEN '1'
+    WHEN NAME LIKE '%มา%นัด%'   THEN '2'
+    WHEN NAME LIKE '%นัดพบแพทย์%' THEN '2'
+    WHEN NAME LIKE '%รับ%REFER%'   THEN '3'
+    WHEN NAME LIKE '%EMS%'   THEN '4'
+    ELSE '1' END as export_code
+    FROM COME_TO_HOSPITAL_CODE CODE
+      WHERE CODE.DEL_FLAG IS NULL )
+ovstost, ---> ? ( link กับ SELECT
+     CODE AS ovstost,
+     NAME AS name,
+     MAPPING as export_code,
+     0 AS item_no,
+     NULL opbkk_code
+     FROM  
+     OPD_DISCHAGE_STATUSES ODS
+       WHERE ODS.CANCEL_FLAG IS NULL )
+pttype, ---> สิทธิ
+pttypeno, ---> เลขที่สิทธิ
+spclty, ---> ? ( link กับ SELECT
+    p.PLACECODE,p.FULLPLACE,
+    NULL as chronic
+    FROM  PLACES p
+    WHERE p.PLACECODE IS NOT NULL )
+TO_CHAR(cur_dep_time, 'HH24:MI:SS') as  cur_dep_time, ---> ? เวลาที่ส่งตรวจจากห้องบัตร
+diag_text,
+staff,
+command_doctor,
+pt_priority, ---> ? อันนี้ไม่ต้องครับ
+NULL as cron_chk,
+rfrolct, ---> ?  รหัสหน่วยบริการ 5 หลัก referout
+rfrilct, ---> ? รหัสหน่วยบริการ 5 หลัก referin
+o_refer_number, ---> เลขที่ refer in
+i_refer_number, ---> เลขที่ refer out
+main_dep ---> ห้องตรวจแรกที่ห้องบัตรส่งไป
+FROM 
+ovst
+WHERE  vstdate='$d_start_cal_en'

@@ -1,0 +1,60 @@
+shift+atl ลูกศรลง 			Copy
+
+SELECT
+-- an,
+pdx, ---> principal diag
+-- hn,
+sex,
+-- age_y,
+-- pttype, ---> สิทธิ
+income, ---> ? CREADIT_GROUP2 หมวดค่ารักษา
+TO_CHAR(regdate, 'YYYY-mm-dd') regdate,
+TO_CHAR(dchdate, 'YYYY-mm-dd') dchdate,
+admdate,
+paid_money, ---> จำนวนเงินที่คนไข้จ่าย
+remain_money, --->  เงินค้างชำระ
+uc_money, ----> ? ลูกหนี้สิทธิ
+item_money, ---> ? เงินรวมทั้งหมด
+pcode, ---> ? รหัสหลักของสิทธิ เช่น A1 A2 A7 ที่อยู่ใน pttype
+vn,
+pttypeno, ----> ?  ไม่ต้องก้ได้ครับอันนี้
+rcpt_money, ----> ? เงินที่มีการพิมพ์ในใบเสร็จทั้งหมดของ  an
+discount_money, ---> ส่วนลด
+an_guid, ---> an||cid
+hos_guid, ---> hn || cid
+NULL cron_chk,
+dx_doctor ---> แพทย์
+from an_stat
+where regdate='$d_start_cal_en'
+
+---------------------------------
+ที่พี่ทำไว้
+ไม่แน่ใจจะใช้ได้ไหม
+SELECT 
+  (DW.IPD_RUN_AN||'/'||DW.IPD_YEAR_AN) an,
+  DW.ICD_CODE pdx,
+  DW.HN,
+  DECODE(DW.SEX,'M','ชาย','หญิง') sex,
+  DW.PATIENT_AGE age_y,
+  DW.CT_CREDIT_ID pttype,
+  TO_CHAR(I.WARDDATE,'DDMMYYYY') regdate,
+  TO_CHAR(I.DATEDISCH ,'DDMMYYYY') datedsch,
+  TO_CHAR(I.DATEADMIT,'DDMMYYYY') admdate,	
+  NBH.AMOUNT paid_money,
+  (I.M_TOTAL - I.M_DISCOUNT - NBH.AMOUNT) remain_money,
+  I.M_CREDIT uc_money,
+  I.M_TOTAL item_money,
+  I.M_DISCOUNT discount_money,
+  DW.C2_SPARE  pcode,
+  NULL cron_chk,
+  (I.RUN_AN||I.YEAR_AN||VP.ID_CARD) an_guild,
+  (VP.RUN_HN|| VP.YEAR_HN||VP.ID_CARD) hos_guid,
+  DW.DOCTOR dx_doctor
+  FROM 
+  NEW_BILLING_HEADER NBH
+  INNER JOIN DISEASE_WAREHOUSE DW ON DW.IPD_RUN_AN =NBH.IPD_RUN_AN AND DW.IPD_YEAR_AN = NBH.IPD_YEAR_AN
+  LEFT JOIN IPDTRANS I ON I.RUN_AN = DW.IPD_RUN_AN AND I.YEAR_AN=DW.IPD_YEAR_AN
+  LEFT JOIN V_PATIENTS VP ON I.HN=VP.HN AND VP.DEAD_FLAG IS NULL 
+  WHERE NBH.OPDIPD='I' AND
+   DW.TYPE='1' AND  DW.OPDIPD='I' AND
+    ROWNUM < 10
